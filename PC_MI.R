@@ -1,6 +1,5 @@
 PC_MI<-function(phen,gene,ps,svpal){
   y<-phen  
-  # ps<-str
   X<-t(gene)
   
   set.seed(1)
@@ -42,9 +41,7 @@ PC_MI<-function(phen,gene,ps,svpal){
   xxxnew<-X1[,sig[ee]]
   yyy<-y1
   
-  
   cvfit1 <- ncvreg::cv.ncvreg(scale(xxxnew), yyy, family="gaussian",penalty="SCAD",gamma=3.7,warn=FALSE)
-  
   
   fit1 <- cvfit1$fit
   obj11 <- (as.vector(fit1$beta[,cvfit1$min]))
@@ -53,7 +50,7 @@ PC_MI<-function(phen,gene,ps,svpal){
   if (length(which(abs(obj1)!=0))!=0)
   {
     sig1a<-which(abs(obj1)!=0)
-    sig1b<-sig[-(sig[ee][sig1a])]                #é€‰å‡É29äÃ?
+    sig1b<-sig[-(sig[ee][sig1a])]               
     yyy1<-y1-(X1[,sig[ee][sig1a]]%*%as.matrix(obj1[sig1a]))
     xxx1<-X1[,sig1b]
     mat1<-vector()
@@ -75,14 +72,12 @@ PC_MI<-function(phen,gene,ps,svpal){
     fit2 <- cvfit2$fit
     obj22 <- (as.vector(fit2$beta[,cvfit2$min]))
     obj2<-obj22[-1]
-    sig1c<-sig1b[ee1][which(abs(obj2)!=0)]     #é€‰å‡É60äÃ?
-    sigg<-sort(c(sig[ee][sig1a],sig1c))
-    
+    sig1c<-sig1b[ee1][which(abs(obj2)!=0)]    
+    sigg<-sort(c(sig[ee][sig1a],sig1c)) 
   }else{
-    
     sigg<-sig[ee]
   }
-  le1<-length(sigg)      #å…±é€‰å‡É89äÃ?
+  le1<-length(sigg)      
   
   
   xxx<-xnew
@@ -122,8 +117,6 @@ PC_MI<-function(phen,gene,ps,svpal){
   xxxxnew<-X1[,sig[eee]]
   yyy<-y1
   
-  
-  
   cvfit3 <- ncvreg::cv.ncvreg(scale(xxxxnew), yyy, family="gaussian",penalty="SCAD",gamma=3.7,warn=FALSE)
   
   fit3 <- cvfit3$fit
@@ -136,7 +129,6 @@ PC_MI<-function(phen,gene,ps,svpal){
   sig2c<-sig[eee][sig2a]
   yyyy1<-y1-(X1[,sig[eee][sig2a]]%*%as.matrix(obj3[sig2a]))
   xxxx1<-X1[,sig2b]
-  #é€‰å‡É15äÃ?
   
   mi2<-vector() 
   
@@ -171,7 +163,7 @@ PC_MI<-function(phen,gene,ps,svpal){
   
   
   sig3a<-which(abs(obj4)!=0)
-  sig3c<-sig2b[eee1][sig3a]               #åˆé€‰å‡É21äÃ?
+  sig3c<-sig2b[eee1][sig3a]             
   
   sig3b<-sig[-c(sig3c,sig2c)]
   
@@ -198,8 +190,6 @@ PC_MI<-function(phen,gene,ps,svpal){
   }else{
     zz<-cbind(matrix(1,nrow(X1),1),ps)
   }
-  
-  # source("multinormal.R")
   
   u1<-ebayes_EM(zz,xxxnew11,y)
   obj5<-u1$u 
@@ -239,12 +229,10 @@ PC_MI<-function(phen,gene,ps,svpal){
     
     if(var(y)>=sum(her1)+u1$sigma2){
       her<-(her1/as.vector(var(y)))*100  
-      
-    }else{
+      }else{
       her<-(her1/(sum(her1)+u1$sigma2))*100 
     } 
-    
-    
+   
     ii<-as.vector(sig1)
     pvalue<-ppp[ii,]
     
@@ -254,7 +242,6 @@ PC_MI<-function(phen,gene,ps,svpal){
       qqq[j,2]=X[1,ii[j]]
       qqq[j,3]=X[2,ii[j]]
       qqq[j,4]=result1[ii[j],]
-      
       qqq[j,5]=pvalue[j]
       qqq[j,6]=her[j]
     }

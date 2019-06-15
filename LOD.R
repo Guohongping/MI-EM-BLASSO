@@ -1,0 +1,42 @@
+likelihood<-function(xxn,xxx,yn,bbo)
+{
+  nq<-ncol(xxx)
+  ns<-nrow(yn)
+  at1<-0
+  
+  if(is.null(bbo)==TRUE){
+    ww1<-1:ncol(xxx)
+    ww1<-as.matrix(ww1)
+  }else{
+    ww1<-as.matrix(which(abs(bbo)>1e-5))
+  }
+  at1<-dim(ww1)[1]
+  lod<-matrix(rep(0,nq),nq,1)
+  if(at1>0.5)
+    ad<-cbind(xxn,xxx[,ww1])
+  else
+    ad<-xxn
+  if(abs(min(eigen(crossprod(ad,ad))$values))<1e-6)
+    bb<-solve(crossprod(ad,ad)+diag(ncol(ad))*0.01)%*%crossprod(ad,yn)
+  else
+    bb<-solve(crossprod(ad,ad))%*%crossprod(ad,yn)
+  vv1<-as.numeric(crossprod((yn-ad%*%bb),(yn-ad%*%bb))/ns);
+  ll1<-sum(log(abs(multinormal(yn,ad%*%bb,vv1))))
+  sub<-1:ncol(ad);
+  if(at1>0.5)
+  {
+    for(i in 1:at1)
+    {
+      ij<-which(sub!=sub[i+ncol(xxn)])
+      ad1<-ad[,ij]
+      if(abs(min(eigen(crossprod(ad1,ad1))$values))<1e-6)
+        bb1<-solve(crossprod(ad1,ad1)+diag(ncol(ad1))*0.01)%*%crossprod(ad1,yn)
+      else
+        bb1<-solve(crossprod(ad1,ad1))%*%crossprod(ad1,yn) 
+      vv0<-as.numeric(crossprod((yn-ad1%*%bb1),(yn-ad1%*%bb1))/ns);
+      ll0<-sum(log(abs(multinormal(yn,ad1%*%bb1,vv0))))
+      lod[ww1[i]]<--2.0*(ll0-ll1)/(2.0*log(10))
+    }
+  }
+  return (lod)
+}

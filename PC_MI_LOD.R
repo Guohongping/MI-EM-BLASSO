@@ -1,8 +1,5 @@
-# svlod<-3
-
 PC_MI_LOD<-function(phen,gene,ps,svlod){
 y<-phen  
-# ps<-str
 X<-t(gene)
 
 set.seed(1)
@@ -24,7 +21,6 @@ if (is.null(ps)==FALSE)
 }else{
   y1<-y 
 }
-# y1<-matrix(y1,nrow=199)
 
 xxx<-xnew
 matcor<-vector()
@@ -55,7 +51,7 @@ obj1<-obj11[-1]
 if (length(which(abs(obj1)!=0))!=0)
 {
   sig1a<-which(abs(obj1)!=0)
-  sig1b<-sig[-(sig[ee][sig1a])]                #é–«å¤Šåš?29æ¶??
+  sig1b<-sig[-(sig[ee][sig1a])]                
   yyy1<-y1-(X1[,sig[ee][sig1a]]%*%as.matrix(obj1[sig1a]))
   xxx1<-X1[,sig1b]
   mat1<-vector()
@@ -77,14 +73,14 @@ if (length(which(abs(obj1)!=0))!=0)
   fit2 <- cvfit2$fit
   obj22 <- (as.vector(fit2$beta[,cvfit2$min]))
   obj2<-obj22[-1]
-  sig1c<-sig1b[ee1][which(abs(obj2)!=0)]     #é–«å¤Šåš?60æ¶??
+  sig1c<-sig1b[ee1][which(abs(obj2)!=0)]     
   sigg<-sort(c(sig[ee][sig1a],sig1c))
   
 }else{
   
   sigg<-sig[ee]
 }
-le1<-length(sigg)      #ééâ‚¬å¤Šåš?89æ¶??
+le1<-length(sigg)     
 
 
 xxx<-xnew
@@ -138,7 +134,7 @@ obj3<-obj33[-1]
   sig2c<-sig[eee][sig2a]
   yyyy1<-y1-(X1[,sig[eee][sig2a]]%*%as.matrix(obj3[sig2a]))
   xxxx1<-X1[,sig2b]
-                                               #é–«å¤Šåš?15æ¶??
+                                              
   
   mi2<-vector() 
   
@@ -173,7 +169,7 @@ obj3<-obj33[-1]
     
    
   sig3a<-which(abs(obj4)!=0)
-  sig3c<-sig2b[eee1][sig3a]               #é™å ¥â‚¬å¤Šåš?21æ¶??
+  sig3c<-sig2b[eee1][sig3a]               
       
   sig3b<-sig[-c(sig3c,sig2c)]
      
@@ -201,7 +197,6 @@ if (is.null(ps)==TRUE)
   zz<-cbind(matrix(1,nrow(X1),1),ps)
 }
 
-# source("multinormal.R")
 
 u1<-ebayes_EM(zz,xxxnew11,y)
 obj5<-u1$u 
@@ -212,7 +207,7 @@ for (i in 1: k)
 }
 Res<- t(as.matrix((rowSums(result1)/ncol(result1))))
 Res1<-as.vector(Res)	
-kk<-length(which(abs(Res1)>1e-5))    #18ä¸?
+kk<-length(which(abs(Res1)>1e-5))   
 
 if(kk!=0){
   
@@ -262,7 +257,7 @@ if(kk!=0){
         sig1<-sslod[,1]
       }
       xxxxx<-as.matrix(X1[,sig1])
-      lod<-sslod[,2]                 #lod>3çš„å…±17ä¸?
+      lod<-sslod[,2]                 
       her<-sslod[,3]
       
       ii<-as.vector(sig1)
@@ -278,11 +273,8 @@ if(kk!=0){
       }
     }else{
       qqq<-NULL
-    }
-    
+    }    
 }
-# return(list(length=k,cor_feature=sigg,mi_feature=siggg,feature=total,EMEB=kk,lod=lod,final=qqq))
-  
   return(list(final=qqq))
 }
 }
